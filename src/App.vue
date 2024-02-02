@@ -5,6 +5,8 @@ import IncomeExpenses from './components/IncomeExpenses.vue';
 import AddTransaction from './components/AddTransaction.vue';
 import TransactionList from './components/TransactionList.vue';
 import {ref, computed, onMounted} from   'vue'
+import{ useToast} from 'vue-toastification'
+const toast = useToast()
 
 
 const transactions = ref([])
@@ -27,6 +29,8 @@ const total = computed(()=>{
 
     }, 0)
 })
+
+
 //get income - adding positive vals
 const income = computed(()=> {
     return transactions.value
@@ -54,7 +58,9 @@ const handleTransactionSubmitted = (transactionData) => {
         amount: transactionData.amount,
 
     })
+    
     saveTransactionToLocalStorage()
+    toast.success('Transaction Added')
 }
 
 //generate unique ID
@@ -68,7 +74,8 @@ const generateUniqueId = () => {
 const handleTransactionDeleted = (id) => {
 
     transactions.value = transactions.value.filter((transaction) => transaction.id !== id)
-    saveTransactionToLocalStorage
+    saveTransactionToLocalStorage()
+    toast.success('Transaction Deleted')
 }
 
 //save to local storage
